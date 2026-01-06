@@ -1,0 +1,7 @@
+{
+  "name": "Copy of DispatchTrack Pro",
+  "description": "A smart logistics tracking system designed to prevent dispatch errors using QR scanning and AI-powered insights.",
+  "requestFramePermissions": [
+    "camera"
+  ]
+}
