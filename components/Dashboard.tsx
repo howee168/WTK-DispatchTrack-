@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Order, OrderStatus, Truck, BoxItem } from '../types';
-import { Printer, CheckCircle, Clock, Plus, X, MapPin, Truck as TruckIcon, Trash2, Package, Eye, Hammer, QrCode } from 'lucide-react';
+import { Printer, Clock, Plus, X, MapPin, Truck as TruckIcon, Trash2, Package, Eye } from 'lucide-react';
 
 interface DashboardProps {
   orders: Order[];
@@ -87,7 +87,7 @@ const Dashboard: React.FC<DashboardProps> = ({ orders, trucks, onAddOrder, onDel
           <body>
             <h1>DISPATCH TRACKER</h1>
             <h2>${truckName}</h2>
-            <img src="${qrUrl}" width="200" height="200" />
+            <img src="${qrUrl}" width="200" height="200" id="qr-code-img" />
             <div class="box-info">
               <p><strong>JOB ID:</strong> ${order.id}</p>
               <p><strong>DESTINATION:</strong><br/>${order.hospitalName}</p>
@@ -98,8 +98,22 @@ const Dashboard: React.FC<DashboardProps> = ({ orders, trucks, onAddOrder, onDel
                 ${order.items.map(item => `<li>${item.qty} x ${item.name}</li>`).join('')}
               </ul>
             </div>
-            <div class="footer">SCAN AT EVERY STEP: WAREHOUSE > TRUCK > SITE > INSTALL</div>
-            <script>window.print();</script>
+            <div class="footer">SCAN AT: WAREHOUSE > TRUCK</div>
+            <script>
+              // Wait for image to load before printing
+              const img = document.getElementById('qr-code-img');
+              if (img.complete) {
+                setTimeout(function() { window.print(); }, 500);
+              } else {
+                img.onload = function() {
+                  setTimeout(function() { window.print(); }, 500);
+                };
+                img.onerror = function() {
+                  console.error('QR code failed to load');
+                  window.print();
+                };
+              }
+            </script>
           </body>
         </html>
       `);
@@ -110,10 +124,6 @@ const Dashboard: React.FC<DashboardProps> = ({ orders, trucks, onAddOrder, onDel
   // Status Badge Helper
   const getStatusBadge = (status: OrderStatus) => {
     switch (status) {
-      case OrderStatus.INSTALLED:
-        return <span className="bg-green-100 text-green-800 px-2 py-1 rounded-full text-xs font-bold flex items-center gap-1"><Hammer className="w-3 h-3"/> INSTALLED</span>;
-      case OrderStatus.ARRIVED:
-        return <span className="bg-purple-100 text-purple-800 px-2 py-1 rounded-full text-xs font-bold flex items-center gap-1"><MapPin className="w-3 h-3"/> ON SITE</span>;
       case OrderStatus.LOADED:
         return <span className="bg-orange-100 text-orange-800 px-2 py-1 rounded-full text-xs font-bold flex items-center gap-1"><TruckIcon className="w-3 h-3"/> IN TRANSIT</span>;
       case OrderStatus.PICKED_UP:

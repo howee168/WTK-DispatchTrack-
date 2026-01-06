@@ -48,7 +48,7 @@ const DispatchLog: React.FC<DispatchLogProps> = ({ logs }) => {
                     <td className="px-6 py-4 whitespace-nowrap">
                       {log.isMatch ? (
                         <span className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-bold border ${
-                          log.action === 'INSTALL' ? 'bg-green-50 text-green-700 border-green-100' :
+                          log.action === 'LOAD' ? 'bg-orange-50 text-orange-700 border-orange-100' :
                           'bg-blue-50 text-blue-700 border-blue-100'
                         }`}>
                           {log.action}

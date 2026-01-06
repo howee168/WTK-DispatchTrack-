@@ -43,8 +43,6 @@ const App: React.FC = () => {
       switch (action) {
         case 'PICKUP': newStatus = OrderStatus.PICKED_UP; break;
         case 'LOAD': newStatus = OrderStatus.LOADED; break;
-        case 'ARRIVE': newStatus = OrderStatus.ARRIVED; break;
-        case 'INSTALL': newStatus = OrderStatus.INSTALLED; break;
       }
 
       setOrders(prev => prev.map(o => 
@@ -89,7 +87,8 @@ const App: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 font-sans text-slate-900 flex flex-col">
+    // h-[100dvh] ensures it fits mobile screens even with address bars
+    <div className="h-[100dvh] bg-slate-50 font-sans text-slate-900 flex flex-col pt-safe">
       
       {/* View Content (Scrollable) */}
       <main className="flex-1 overflow-y-auto relative no-scrollbar">
@@ -97,13 +96,13 @@ const App: React.FC = () => {
       </main>
 
       {/* Bottom Navigation */}
-      <nav className="bg-white border-t border-slate-200 fixed bottom-0 w-full pb-safe z-50">
+      <nav className="bg-white border-t border-slate-200 w-full pb-safe z-50 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)]">
         <div className="max-w-md mx-auto flex justify-around items-center h-16 px-2">
           <NavButton 
             active={view === 'DASHBOARD'} 
             onClick={() => setView('DASHBOARD')} 
             icon={<LayoutDashboard />} 
-            label="Live Board" 
+            label="Dashboard" 
           />
           
           <div className="relative -top-6">
